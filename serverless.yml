@@ -1,0 +1,30 @@
+service: calendar-repl
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-east-1
+  profile: serverless-admin
+  stage: dev
+  timeout: 10
+  memorySize: 128
+  environment:
+    REGION_NAME: ${self:provider.region}
+ 
+
+functions:
+  calendar_generator:
+    handler: handler.calendar_generator
+
+  get:
+      handler: handler.calendar_generator
+      events:
+        - http:
+            path: calendar/get/{year}
+            method: get
+            cors: true
+
+plugins:
+  -serverless-python-requirements
