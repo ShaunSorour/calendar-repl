@@ -21,7 +21,6 @@ def calendar_generator(event, context):
 
 
 def retail_calendar(year):
-
     month_days = [
         ("Feb", 28),
         ("Mar", 28),
@@ -36,12 +35,11 @@ def retail_calendar(year):
         ("Dec", 28),
         ("Jan", 35)
     ]
-
+    
     calendar = {
         "FiscalYear": year,
         "Months": []
     }
-
     # using the start of 2022 retail year as a reference
     base_date = datetime(2021, 1, 30)
     days = 2022 - year
@@ -50,7 +48,9 @@ def retail_calendar(year):
     start_date = base_date + timedelta(days=days)
     start_date = start_date.replace(year=year-1)
 
-    for month_name, month_length in month_days:
+    for month_name, month_length in month_days: 
+        # assuming every 5 years to add extra week
+        month_length = check_53_week(year, month_name, month_length)  
         fiscal_month = {
             "FiscalMonth": month_name,
             "NumberOfWeeks": month_length // 7,
@@ -78,4 +78,12 @@ def retail_calendar(year):
 
         calendar["Months"].append(fiscal_month)
 
-    return calendar    
+    return calendar   
+
+
+def check_53_week(year, month, days):
+    # assuming extra week falls in Jan
+    if month == "Jan" and year % 5 == 0:
+        days = 42
+
+    return days

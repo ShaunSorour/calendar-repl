@@ -1,7 +1,6 @@
 from handler import calendar_generator
 
 
-
 def test_invalid_year():
     event = {
         'pathParameters': {
